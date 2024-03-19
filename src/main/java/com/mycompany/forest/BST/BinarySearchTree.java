@@ -1,4 +1,4 @@
-package com.mycompany.BST;
+package com.mycompany.forest.BST;
 import com.mycompany.commun.nodes.BSTNode;
 import com.mycompany.interfaces.IBinarySearchTree;
 import com.mycompany.commun.nodes.BSTNode;
