@@ -5,20 +5,23 @@
 
 package com.mycompany.app;
 
-import com.mycompany.forest.AVL.AVLTree;
+import com.mycompany.forest.BST.BinarySearchTree;;
 
 public class App {
     public static void main(String[] args) {
-        AVLTree tree = new AVLTree();
+        BinarySearchTree tree = new BinarySearchTree();
         tree.insert(10, "A");
         tree.insert(20, "B");
         tree.insert(30, "C");
         tree.insert(40, "D");
-        tree.insert(50, "E");
         tree.insert(25, "F");
-        tree.delete(30);
+        tree.insert(5, "G");
+        tree.insert(50, "U");
+        tree.insert(60, "V");
+        tree.delete(40);
         System.out.println("Preorder traversal" + " of constructed tree is : ");
-        tree.preOrder();
-
+        tree.inOrder();
+        System.out.println("=======================");
+        tree.printTree();
     }
 }

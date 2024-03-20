@@ -1,10 +1,9 @@
 package com.mycompany.forest.BST;
 import com.mycompany.commun.nodes.BSTNode;
 import com.mycompany.interfaces.IBinarySearchTree;
-import com.mycompany.commun.nodes.BSTNode;
 
 
-public class BinarySearchTree implements IBinarySearchTree {
+public class BinarySearchTree implements IBinarySearchTree<BSTNode> {
     private BSTNode root;
 
     public BinarySearchTree() {
@@ -23,12 +22,14 @@ public class BinarySearchTree implements IBinarySearchTree {
                 if (key < current.getKey()) {
                     current = current.getLeft();
                     if (current == null) {
+                        newNode.setParent(parent);
                         parent.setLeft(newNode);
                         return;
                     }
                 } else {
                     current = current.getRight();
                     if (current == null) {
+                        newNode.setParent(parent);
                         parent.setRight(newNode);
                         return;
                     }
@@ -37,37 +38,57 @@ public class BinarySearchTree implements IBinarySearchTree {
         }
     }
 
-    public void delete(int key) {
-        root = deleteRec(root, key);
-    }
 
-    private BSTNode deleteRec(BSTNode root, int key) {
-        if (root == null) {
-            return root;
-        }
-        if (key < root.getKey()) {
-            root.setLeft(deleteRec(root.getLeft(), key));
-        } else if (key > root.getKey()) {
-            root.setRight(deleteRec(root.getRight(), key));
-        } else {
-            if (root.getLeft() == null) {
-                return root.getRight();
-            } else if (root.getRight() == null) {
-                return root.getLeft();
+    public void delete(int key){
+        BSTNode current = search(key);
+
+        if(current == null) return;
+
+
+        if(current.isLeaf()){
+            if (current == root){
+                root = null;
+            }else{
+                if(current.getParent().getLeft() == current){
+                    current.getParent().setLeft(null);
+                }else{
+                    current.getParent().setRight(null);
+                }
             }
-            root.setKey(minValue(root.getRight()));
-            root.setRight(deleteRec(root.getRight(), root.getKey()));
-        }
-        return root;
-    }
+        }else{
+            if(current.hasLeft() && current.hasRight()){
+                BSTNode sucessor = this.getMin(current.getRight());
 
-    private int minValue(BSTNode root) {
-        int minValue = root.getKey();
-        while (root.getLeft() != null) {
-            minValue = root.getLeft().getKey();
-            root = root.getLeft();
+                if(sucessor.hasRight()){
+                    sucessor.getParent().setLeft(sucessor.getRight());
+                }else{
+                    sucessor.getParent().setLeft(null);
+                }
+            }else{
+                if(current.hasLeft()){
+                    if(current == root){
+                        root = current.getLeft();
+                    }else{
+                        if(current.getParent().getLeft() == current){
+                            current.getParent().setLeft(current.getLeft());
+                        }else{
+                            current.getParent().setRight(current.getLeft());
+                        }
+                    }
+                }else{
+                    if(current == root){
+                        root = current.getRight();
+                    }else{
+                        if(current.getParent().getLeft() == current){
+                            current.getParent().setLeft(current.getRight());
+                        }else{
+                            current.getParent().setRight(current.getRight());
+                        }
+                    }
+                }
+            }
         }
-        return minValue;
+
     }
 
     public BSTNode search(int key) {
@@ -83,6 +104,14 @@ public class BinarySearchTree implements IBinarySearchTree {
             }
         }
         return current;
+    }
+
+    protected BSTNode getMin(BSTNode node){
+        if(!node.hasLeft()){
+            return node;
+        }else{
+            return getMin(node.getLeft());
+        }
     }
 
     public void inOrder() {
@@ -128,5 +157,4 @@ public class BinarySearchTree implements IBinarySearchTree {
     public void setRoot(BSTNode root) {
         this.root = root;
     }
-
 }

@@ -5,6 +5,7 @@ public class BSTNode {
     private Object value;
     private BSTNode left;
     private BSTNode right;
+    private BSTNode parent;
 
     public BSTNode(int key, Object value) {
         this.key = key;
@@ -27,6 +28,10 @@ public class BSTNode {
         return left;
     }
 
+    public BSTNode getParent() {
+        return parent;
+    }
+
     public void setLeft(BSTNode left) {
         this.left = left;
     }
@@ -43,9 +48,24 @@ public class BSTNode {
         this.key = key;
     }
 
+    public void setParent(BSTNode parent) {
+        this.parent = parent;
+    }
+
     public void setValue(Object value) {
         this.value = value;
     }
 
+    public boolean isLeaf() {
+        return left == null && right == null;
+    }
+
+    public boolean hasLeft() {
+        return left != null;
+    }
+
+    public boolean hasRight() {
+        return right != null;
+    }
 
 }
